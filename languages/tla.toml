@@ -1,0 +1,12 @@
+name = "tla"
+detection_glob = "*.tla"
+label = "TLA+"
+tree_sitter_grammar = "tlaplus"
+
+# No lsp_binary: verified no standalone LSP exists for TLA+. The real
+# tools (SANY parser, TLC model checker) ship inside vscode-tlaplus as
+# bundled .jar files the extension drives directly, not exposed as a
+# spawnable LSP binary. No bundled task either, for a related reason:
+# TLC's real invocation depends on where a given project keeps
+# tla2tools.jar, which this manifest can't assume -- a project that
+# wants one can declare it directly in its own .iderm/tasks.toml.

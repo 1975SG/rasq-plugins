@@ -1,0 +1,19 @@
+name = "murphi"
+detection_glob = "*.m"
+label = "Murphi"
+
+# No lsp_binary: verified no LSP exists for Murphi (even less editor
+# tooling than TLA+/Promela -- no syntax-highlighting extension found
+# either). No tree_sitter_grammar: none confirmed to exist.
+#
+# .m is the real, conventional Murphi source extension (e.g. cmurphi's
+# own examples: ns.m) -- also used by a proprietary numerical-computing
+# environment this project deliberately excluded (ADR-063). No active
+# conflict: no manifest for that environment exists to collide with. A
+# real one only if that ever changes, not a reason to avoid the correct
+# extension now.
+
+[[tasks]]
+label = "murphi (compile + verify)"
+program = "sh"
+args = ["-c", "mu *.m && g++ -O2 -o verifier *.cpp && ./verifier"]

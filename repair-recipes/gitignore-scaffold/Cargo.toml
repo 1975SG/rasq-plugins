@@ -1,0 +1,16 @@
+[package]
+name = "example-repair-recipe"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+wit-bindgen-rt = { version = "0.44.0", features = ["bitflags"] }
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "iderm-examples:example-repair-recipe"
+target = { world = "repair-plugin", path = "wit/deps/iderm-plugin/iderm-plugin.wit" }
+
+[package.metadata.component.dependencies]

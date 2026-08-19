@@ -1,0 +1,20 @@
+name = "fortran"
+detection_file = "fpm.toml"
+label = "Fortran (fpm)"
+lsp_binary = "fortls"
+tree_sitter_grammar = "fortran"
+
+[[tasks]]
+label = "fpm build"
+program = "fpm"
+args = ["build"]
+
+[[tasks]]
+label = "fpm test"
+program = "fpm"
+args = ["test"]
+
+[[tasks]]
+label = "fpm run"
+program = "fpm"
+args = ["run"]

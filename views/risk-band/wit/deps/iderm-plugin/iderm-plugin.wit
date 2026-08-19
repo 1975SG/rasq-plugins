@@ -1,0 +1,327 @@
+package iderm:plugin@0.4.0;
+
+/// Shared types passed across the host/plugin boundary.
+/// Kept intentionally minimal — plugins get read access to project
+/// state, never direct filesystem or process access. All filesystem
+/// interaction goes through the `host` import so the runtime can
+/// sandbox it.
+interface types {
+    enum severity {
+        info,
+        warning,
+        error,
+    }
+
+    record project-info {
+        root-path: string,
+        languages: list<string>,
+        build-manifest: option<string>,
+        build-system: option<string>,
+    }
+
+    record finding {
+        severity: severity,
+        message: string,
+        path: option<string>,
+        rule-id: string,
+    }
+
+    record file-change {
+        path: string,
+        diff: string,
+        description: string,
+    }
+}
+
+/// Host-provided capabilities. Every plugin import goes through here —
+/// no ambient filesystem or process access. This is what makes the
+/// WASM sandbox meaningful rather than nominal.
+interface host {
+    use types.{project-info};
+
+    read-file: func(path: string) -> result<string, string>;
+    list-files: func(glob: string) -> result<list<string>, string>;
+    log: func(message: string);
+}
+
+/// Implemented by doctor-rule plugins. `check` is pure: given project
+/// state, return findings. No side effects, no writes — that's what
+/// keeps `doctor` safe to run automatically on every `iderm .`.
+interface doctor-rule {
+    use types.{project-info, finding};
+
+    rule-id: func() -> string;
+    check: func(project: project-info) -> list<finding>;
+}
+
+/// Implemented by repair-recipe plugins. `propose` is also pure — it
+/// returns a diff, never writes directly. Core applies the diff only
+/// after the existing [Y] confirm gate. This keeps repair-recipe
+/// plugins to the same trust boundary as built-in repair.
+interface repair-recipe {
+    use types.{project-info, file-change};
+
+    recipe-id: func() -> string;
+    applies-to: func(project: project-info) -> bool;
+    propose: func(project: project-info) -> result<list<file-change>, string>;
+}
+
+world doctor-plugin {
+    import host;
+    export doctor-rule;
+}
+
+world repair-plugin {
+    import host;
+    export repair-recipe;
+}
+
+/// Shared rendering primitives for `view-provider` plugins (ADR-009,
+/// shape designed in ADR-014/ADR-015 — see docs/modules/Idermviz.md for
+/// the full rationale behind each shape below). A plugin composes these,
+/// Core only ever draws them — never raw ANSI from a plugin.
+interface view {
+    use types.{severity};
+
+    // --- Box-drawing diagrams: state graphs, decision flow (ADR-014 #1) ---
+
+    /// Small, fixed shape vocabulary — not general arbitrary-angle
+    /// geometry.
+    enum node-shape {
+        rectangle,
+        rounded-rectangle,
+        diamond,
+    }
+
+    /// Explicit position/size in heatmap-grid units (the same width/
+    /// height space as `heatmap-view`'s own fields) — used only by
+    /// `composed-view`'s overlay nodes, which need real spatial
+    /// registration against specific heatmap cells (ADR-015's PCB-
+    /// outline-over-EMC-field example). `state-graph-view` nodes leave
+    /// `diagram-node.anchor` unset; their position comes entirely from
+    /// Core's own layered-layout pass instead.
+    record node-anchor {
+        x: f64,
+        y: f64,
+        width: f64,
+        height: f64,
+    }
+
+    record diagram-node {
+        id: string,
+        label: string,
+        shape: node-shape,
+        /// Reuses the shared `severity` type — one status vocabulary
+        /// project-wide, not a parallel one invented here.
+        status: option<severity>,
+        /// `none` for `state-graph-view` nodes; `some` for
+        /// `composed-view` overlay nodes. Added as an optional field
+        /// (ADR-013 MINOR-safe) rather than a second node record, so
+        /// one shared shape/status vocabulary still serves both
+        /// primitives.
+        anchor: option<node-anchor>,
+    }
+
+    record diagram-edge {
+        from-id: string,
+        to-id: string,
+        /// Embedded directly in the rendered line (e.g. a "Yes" label on
+        /// a decision-branch edge) — the layout pass reserves space for
+        /// this, not just for node boxes.
+        label: option<string>,
+        highlighted: bool,
+    }
+
+    /// Full reachable-state space. Needs a real layered/hierarchical
+    /// layout pass at render time (rank by BFS depth from
+    /// `initial-node-id`, minimize inter-rank crossings) — the WIT shape
+    /// only carries the graph data, not a layout.
+    record state-graph-view {
+        nodes: list<diagram-node>,
+        edges: list<diagram-edge>,
+        initial-node-id: string,
+    }
+
+    /// A single violating path (e.g. a model-checker counterexample).
+    /// Deliberately a separate, much simpler view from
+    /// `state-graph-view` — a plain linear list needs no graph layout at
+    /// all, same as the TLA+ Toolbox's own error-trace view.
+    record trace-step {
+        state-label: string,
+        action-label: option<string>,
+    }
+
+    record trace-view {
+        steps: list<trace-step>,
+    }
+
+    // --- Braille canvas: continuous single-series curves (ADR-014 #2) ---
+
+    enum axis-scale {
+        linear,
+        log,
+    }
+
+    /// Distinct color/style per role, not per series name — an engineer
+    /// shouldn't have to relearn the color language per plugin.
+    enum series-role {
+        measured,
+        limit,
+        average,
+        other,
+    }
+
+    record chart-point {
+        x: f64,
+        y: f64,
+    }
+
+    record chart-series {
+        name: string,
+        role: series-role,
+        points: list<chart-point>,
+    }
+
+    /// A violation rendered directly on the curve, not only in a
+    /// separate table — reuses `severity` the same way `diagram-node`
+    /// does.
+    record chart-marker {
+        x: f64,
+        y: f64,
+        status: severity,
+    }
+
+    /// Exact X/Y value on demand — the "verifying" reading mode,
+    /// separate from the color-coded curve's "glancing" mode.
+    record cursor-position {
+        x: f64,
+        y: f64,
+    }
+
+    /// A statistical interval, not a rendering-fidelity feature — a
+    /// confidence band, a P10/P90 range around a P50 series, a fit's
+    /// error band (ADR-017). `upper`/`lower` must be the same length,
+    /// index-aligned to the same X position (same convention `series`'
+    /// own point lists already assume for `windows(2)` drawing) so the
+    /// renderer can connect them without guessing a correspondence.
+    /// `status` reuses `severity` for a pass/fail-shaded band the same
+    /// way `chart-marker`/`diagram-node` already do — `none` for a band
+    /// with no pass/fail meaning (e.g. a plain statistical interval).
+    record band {
+        upper: list<chart-point>,
+        lower: list<chart-point>,
+        label: string,
+        status: option<severity>,
+    }
+
+    record xy-chart-view {
+        series: list<chart-series>,
+        x-scale: axis-scale,
+        y-scale: axis-scale,
+        markers: list<chart-marker>,
+        cursor: option<cursor-position>,
+        /// Plain list, not `option<list<band>>` — matches `series`/
+        /// `markers` on this same record, where an empty list already
+        /// means "none", not a second layer of optionality (ADR-017).
+        bands: list<band>,
+    }
+
+    // --- Half-block truecolor grid: heatmaps (ADR-014 #3) ---
+
+    /// Perceptually-uniform is the default; `rainbow` is kept as an
+    /// explicit, named, non-default alternative for domain-familiarity
+    /// cases (e.g. CST/HFSS-style conventions) — never a silent default.
+    enum colormap {
+        perceptually-uniform,
+        rainbow,
+    }
+
+    /// `values` is row-major; length must equal `width * height`.
+    record heatmap-scalar-cells {
+        values: list<f64>,
+        value-min: f64,
+        value-max: f64,
+        colormap: colormap,
+    }
+
+    /// How a heatmap's cells are filled (ADR-033). `scalar` is a
+    /// continuous measurement mapped through `colormap` — the only path
+    /// that existed before this variant, unchanged. `rgb` is a color
+    /// the plugin already computed per cell (row-major, 3 bytes — r, g,
+    /// b — per cell, length must equal `width * height * 3`): for
+    /// values that already *are* a color (e.g. Lab→sRGB-converted
+    /// swatches) or a small set of discrete states a continuous
+    /// gradient can't honestly represent. `value-min`/`value-max`/
+    /// `colormap` don't apply here, so this arm carries none of them —
+    /// not a set of fields a plugin would have to fill with meaningless
+    /// values, per the same "no second layer of optionality" instinct
+    /// `band`'s empty-list convention already established.
+    variant heatmap-cells {
+        scalar(heatmap-scalar-cells),
+        rgb(list<u8>),
+    }
+
+    record heatmap-view {
+        width: u32,
+        height: u32,
+        cells: heatmap-cells,
+    }
+
+    // --- Plain tables (FEC-style compliance/measurement listings) ---
+
+    record table-cell {
+        text: string,
+        status: option<severity>,
+    }
+
+    record table-view {
+        headers: list<string>,
+        rows: list<list<table-cell>>,
+    }
+
+    // --- Composition (ADR-015): shape overlay on top of a heatmap ---
+
+    /// Core stays format-agnostic here — a plugin always hands back
+    /// already-normalized shapes (however it parsed them: SVG, CSV/XLSX,
+    /// or a plugin-authored Gerber parser Core never needs to know
+    /// about), never a file format for Core itself to parse.
+    record composed-view {
+        heatmap: heatmap-view,
+        overlay-nodes: list<diagram-node>,
+        overlay-edges: list<diagram-edge>,
+    }
+
+    variant view-primitive {
+        state-graph(state-graph-view),
+        trace(trace-view),
+        xy-chart(xy-chart-view),
+        heatmap(heatmap-view),
+        table(table-view),
+        composed(composed-view),
+    }
+}
+
+/// Implemented by view-provider plugins (ADR-009/ADR-014). A plugin owns
+/// its view-state and command vocabulary entirely — Core passes a raw
+/// command string through and never interprets it, same freedom-over-
+/// meaning-not-over-the-sandbox-boundary principle `doctor-rule` already
+/// establishes. See docs/modules/Idermviz.md's "Interaction / command
+/// layer" for the full rationale.
+interface view-provider {
+    use types.{project-info};
+    use view.{view-primitive};
+
+    /// Opaque, plugin-owned state serialized as bytes — Core never
+    /// interprets this, only stores and passes it back.
+    type view-state = list<u8>;
+
+    view-id: func() -> string;
+    init: func(project: project-info) -> result<view-state, string>;
+    render: func(state: view-state) -> result<list<view-primitive>, string>;
+    handle-command: func(state: view-state, command: string) -> result<tuple<view-state, list<view-primitive>>, string>;
+}
+
+world view-plugin {
+    import host;
+    export view-provider;
+}

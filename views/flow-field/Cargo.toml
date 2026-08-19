@@ -1,0 +1,17 @@
+[package]
+name = "example-view-flow-field"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+potential-flow = { path = "../../libs/potential-flow" }
+wit-bindgen-rt = { version = "0.44.0", features = ["bitflags"] }
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "iderm-examples:example-view-flow-field"
+target = { world = "view-plugin", path = "wit/deps/iderm-plugin/iderm-plugin.wit" }
+
+[package.metadata.component.dependencies]

@@ -1,0 +1,10 @@
+name = "latex"
+detection_glob = "*.tex"
+label = "LaTeX"
+lsp_binary = "texlab"
+tree_sitter_grammar = "latex"
+
+[[tasks]]
+label = "latexmk"
+program = "latexmk"
+args = ["-pdf"]

@@ -1,0 +1,17 @@
+[package]
+name = "example-view-wave-shoaling"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+analog-waveform = { path = "../../libs/analog-waveform" }
+wit-bindgen-rt = { version = "0.44.0", features = ["bitflags"] }
+
+[lib]
+crate-type = ["cdylib"]
+
+[package.metadata.component]
+package = "iderm-examples:example-view-wave-shoaling"
+target = { world = "view-plugin", path = "wit/deps/iderm-plugin/iderm-plugin.wit" }
+
+[package.metadata.component.dependencies]

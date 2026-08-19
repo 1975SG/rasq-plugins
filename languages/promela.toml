@@ -1,0 +1,13 @@
+name = "promela"
+detection_glob = "*.pml"
+label = "Promela"
+
+# No lsp_binary: verified no standalone LSP exists for Promela (only
+# syntax-highlighting-only editor extensions, e.g. vscode-promela).
+# No tree_sitter_grammar either: no grammar for it could be confirmed
+# to exist, unlike TLA+'s real tlaplus-community/tree-sitter-tlaplus.
+
+[[tasks]]
+label = "spin (full verify)"
+program = "sh"
+args = ["-c", "spin -a *.pml && gcc -o pan pan.c && ./pan"]
