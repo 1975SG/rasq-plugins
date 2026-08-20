@@ -13,7 +13,7 @@ name = "checksums"
 version = "0.1.0"
 
 [[package]]
-name = "example-view-frame-builder"
+name = "frame-builder"
 version = "0.1.0"
 dependencies = [
  "frame-format",

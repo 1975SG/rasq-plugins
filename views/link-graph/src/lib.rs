@@ -149,11 +149,11 @@ fn render_at(criterion: Criterion) -> Result<Vec<ViewPrimitive>, String> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-link-graph".to_string()
+        "link-graph".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-link-graph: init for project at {}", project.root_path));
+        host::log(&format!("link-graph: init for project at {}", project.root_path));
         Ok(vec![Criterion::Latency.to_byte()])
     }
 

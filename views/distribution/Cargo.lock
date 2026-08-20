@@ -13,17 +13,17 @@ name = "deviation-analyzer"
 version = "0.1.0"
 
 [[package]]
-name = "distribution-analysis"
-version = "0.1.0"
-
-[[package]]
-name = "example-view-distribution"
+name = "distribution"
 version = "0.1.0"
 dependencies = [
  "deviation-analyzer",
  "distribution-analysis",
  "wit-bindgen-rt",
 ]
+
+[[package]]
+name = "distribution-analysis"
+version = "0.1.0"
 
 [[package]]
 name = "wit-bindgen-rt"

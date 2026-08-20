@@ -16,5 +16,5 @@ real to show.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_checksum_inspector.wasm`.
+Produces `target/wasm32-wasip1/release/checksum_inspector.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

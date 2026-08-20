@@ -64,11 +64,11 @@ fn build_table() -> ViewPrimitive {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-invariant-checker".to_string()
+        "invariant-checker".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-invariant-checker: init for project at {}", project.root_path));
+        host::log(&format!("invariant-checker: init for project at {}", project.root_path));
         Ok(Vec::new())
     }
 

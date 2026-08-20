@@ -13,7 +13,7 @@ name = "black-scholes"
 version = "0.1.0"
 
 [[package]]
-name = "example-view-option-surface"
+name = "option-surface"
 version = "0.1.0"
 dependencies = [
  "black-scholes",

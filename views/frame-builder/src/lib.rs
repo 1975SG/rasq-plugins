@@ -19,7 +19,7 @@ fn hex_bytes(bytes: &[u8]) -> String {
 /// builds every declared frame from `spec` (the real "builder" half),
 /// then inspects each one back (the "inspector" half) -- one declared
 /// frame's trailer gets a single bit flipped each live tick, rotating
-/// which one, same convention `example-view-checksum-inspector`
+/// which one, same convention `checksum-inspector`
 /// already established: the more useful thing to prove live is the
 /// verification pipeline catching a *different* real corruption each
 /// time, not just the table redrawing.
@@ -101,11 +101,11 @@ fn render_at(phase: u64) -> Result<Vec<ViewPrimitive>, String> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-frame-builder".to_string()
+        "frame-builder".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-frame-builder: init for project at {}", project.root_path));
+        host::log(&format!("frame-builder: init for project at {}", project.root_path));
         Ok(encode_state(0))
     }
 

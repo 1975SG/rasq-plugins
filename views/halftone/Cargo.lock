@@ -9,16 +9,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b588b76d00fde79687d7646a9b5bdf3cc0f655e0bbd080335a95d7e96f3587da"
 
 [[package]]
-name = "example-view-halftone"
+name = "halftone"
+version = "0.1.0"
+
+[[package]]
+name = "halftone-view"
 version = "0.1.0"
 dependencies = [
  "halftone",
  "wit-bindgen-rt",
 ]
-
-[[package]]
-name = "halftone"
-version = "0.1.0"
 
 [[package]]
 name = "wit-bindgen-rt"

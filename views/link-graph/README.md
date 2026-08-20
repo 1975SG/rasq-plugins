@@ -24,5 +24,5 @@ format — worth keeping in mind if I ever wire a live source to this.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_link_graph.wasm`.
+Produces `target/wasm32-wasip1/release/link_graph_view.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

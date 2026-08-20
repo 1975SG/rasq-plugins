@@ -16,5 +16,5 @@ percentiles).
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_risk_band.wasm`.
+Produces `target/wasm32-wasip1/release/risk_band.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

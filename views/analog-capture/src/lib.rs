@@ -14,7 +14,7 @@ struct Component;
 /// more channels than this on one chart stops being readable at
 /// typical terminal widths -- the rest still appear in the summary
 /// `Table` below, same "chart what's readable, list the rest"
-/// convention `example-view-vcd-capture` already uses for its own
+/// convention `vcd-capture` already uses for its own
 /// channel cap.
 const MAX_CHARTED_CHANNELS: usize = 4;
 
@@ -31,8 +31,8 @@ const MAX_CHARTED_CHANNELS: usize = 4;
 const MAX_PLOTTED_POINTS: usize = 500;
 
 /// reserved live-refresh token `App::tick_view` sends every
-/// `tick_interval` while `F5` live mode is on -- see `example-view-
-/// emc`'s own copy of this same constant for the full explanation.
+/// `tick_interval` while `F5` live mode is on -- see `emc`'s own copy
+/// of this same constant for the full explanation.
 /// was missing here entirely until ADR-055: this plugin used to
 /// reject every command including this one, on the assumption a
 /// `.analog-capture` file is a finished record by the time anything
@@ -45,7 +45,7 @@ const LIVE_TICK_COMMAND: &str = "\0tick";
 
 /// manually-typed data point (ADR-056) -- `value: <channel> <x> <y>`,
 /// entirely session-only. Lives in the plugin's own opaque `view-state`
-/// the same way `example-view-emc`'s cursor/phase already does; never
+/// the same way `emc`'s cursor/phase already does; never
 /// written to disk. Rendered as its own distinct series/rows rather
 /// than spliced into the real capture's aligned sample arrays, so a
 /// manual annotation always reads as visibly separate from what the
@@ -346,11 +346,11 @@ fn validate_value(capture: &Capture, channel: &str, y: f64) -> Result<(), String
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-analog-capture".to_string()
+        "analog-capture".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-analog-capture: init for project at {}", project.root_path));
+        host::log(&format!("analog-capture: init for project at {}", project.root_path));
         Ok(Vec::new())
     }
 
@@ -367,7 +367,7 @@ impl Guest for Component {
     /// (finite, and bounded against the real capture's own range once
     /// one exists) before ever reaching the chart; never written to
     /// disk, lives only in this pane's session state, same as
-    /// `example-view-emc`'s own cursor/phase. `stream: <filename>`
+    /// `emc`'s own cursor/phase. `stream: <filename>`
     /// (ADR-058) pins this pane to one specific `.analog-capture` file
     /// among however many currently match, so several panes can each
     /// watch a different real stream instead of all landing on

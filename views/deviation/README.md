@@ -16,5 +16,5 @@ band) and `table` (summary statistics).
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_deviation.wasm`.
+Produces `target/wasm32-wasip1/release/deviation.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

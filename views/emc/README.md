@@ -25,5 +25,5 @@ for "what can a view plugin actually do."
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_emc.wasm`. Copy it
+Produces `target/wasm32-wasip1/release/emc.wasm`. Copy it
 into a project's `.iderm/views/` to use it.

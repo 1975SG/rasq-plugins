@@ -312,7 +312,7 @@ fn render_primitives(cursor_freq_mhz: f64, phase: f64, mode: Mode) -> Vec<ViewPr
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-emc-curve".to_string()
+        "emc".to_string()
     }
 
     /// deliberately calls back into `host::log` to prove the host import
@@ -323,7 +323,7 @@ impl Guest for Component {
     /// `host::read_file`.
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
         bindings::iderm::plugin::host::log(&format!(
-            "example-view-emc: init for project at {}",
+            "emc: init for project at {}",
             project.root_path
         ));
         // default cursor to the worst-margin point -- more useful than an

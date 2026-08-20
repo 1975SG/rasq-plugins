@@ -78,7 +78,7 @@ fn build_primitives(phase: f64) -> Vec<ViewPrimitive> {
 
     // two points per bin -- `(x_start, density)` then `(x_end, density)`
     // -- connecting consecutive bins draws a real histogram staircase,
-    // same technique `example-view-emc`'s step-shaped `Limit` series
+    // same technique `emc`'s step-shaped `Limit` series
     // already uses for its own flat-then-jump shape.
     let mut pdf_points = Vec::with_capacity(bins.len() * 2);
     for b in &bins {
@@ -139,12 +139,12 @@ fn build_primitives(phase: f64) -> Vec<ViewPrimitive> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-distribution-analysis".to_string()
+        "distribution".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
         bindings::iderm::plugin::host::log(&format!(
-            "example-view-distribution: init for project at {}",
+            "distribution: init for project at {}",
             project.root_path
         ));
         Ok(encode_state(0.0))

@@ -18,5 +18,5 @@ one — repair recipes can only propose brand-new files, by design.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_repair_recipe.wasm`.
+Produces `target/wasm32-wasip1/release/gitignore_scaffold.wasm`.
 Copy it into a project's `.iderm/repair-recipes/` to use it.

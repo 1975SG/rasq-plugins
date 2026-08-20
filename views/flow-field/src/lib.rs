@@ -86,14 +86,14 @@ fn placeholder(text: String) -> Vec<ViewPrimitive> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-flow-field".to_string()
+        "flow-field".to_string()
     }
 
     /// deliberately not live-refreshed -- a declared flow spec doesn't
     /// change on its own between ticks, same reasoning every other
     /// static-declaration view in this project already follows.
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-flow-field: init for project at {}", project.root_path));
+        host::log(&format!("flow-field: init for project at {}", project.root_path));
         Ok(Vec::new())
     }
 

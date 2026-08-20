@@ -15,5 +15,5 @@ values, greeks).
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_option_surface.wasm`.
+Produces `target/wasm32-wasip1/release/option_surface.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

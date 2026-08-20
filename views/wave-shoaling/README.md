@@ -17,5 +17,5 @@ header is `depth,wave_height,wavelength`.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_wave_shoaling.wasm`.
+Produces `target/wasm32-wasip1/release/wave_shoaling.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

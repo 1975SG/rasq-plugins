@@ -160,11 +160,11 @@ fn load_primitives() -> Result<Vec<ViewPrimitive>, String> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-wave-shoaling".to_string()
+        "wave-shoaling".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-wave-shoaling: init for project at {}", project.root_path));
+        host::log(&format!("wave-shoaling: init for project at {}", project.root_path));
         Ok(Vec::new())
     }
 
@@ -173,7 +173,7 @@ impl Guest for Component {
     }
 
     /// purely derived from the capture file on every call -- no session
-    /// state of its own, unlike `example-view-analog-capture`'s manual
+    /// state of its own, unlike `analog-capture`'s manual
     /// points/stream pin. Only the reserved live-refresh token is
     /// recognized; this view has no other command vocabulary.
     fn handle_command(state: Vec<u8>, command: String) -> Result<(Vec<u8>, Vec<ViewPrimitive>), String> {

@@ -69,7 +69,7 @@ fn build_table(swatches: &[Swatch]) -> ViewPrimitive {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-color-swatch".to_string()
+        "color-swatch".to_string()
     }
 
     /// deliberately not live-refreshed, same reasoning every other
@@ -77,7 +77,7 @@ impl Guest for Component {
     /// established: a declared palette doesn't change on its own
     /// between ticks.
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-color-swatch: init for project at {}", project.root_path));
+        host::log(&format!("color-swatch: init for project at {}", project.root_path));
         Ok(Vec::new())
     }
 

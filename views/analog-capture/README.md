@@ -23,5 +23,5 @@ a still-running task is appending to stays current.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_analog_capture.wasm`.
+Produces `target/wasm32-wasip1/release/analog_capture.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

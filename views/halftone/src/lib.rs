@@ -17,7 +17,7 @@ const BAND_HEIGHT: u32 = 10;
 /// more than this and each band gets too short to read as a real dot
 /// pattern not noise -- the rest still get their own row in the
 /// `Table` below, same "chart what's readable, list the rest"
-/// convention `example-view-analog-capture` already established.
+/// convention `analog-capture` already established.
 const MAX_RENDERED_SCREENS: usize = 4;
 /// sample grid resolution for the `Table`'s measured-coverage
 /// cross-check column -- coarser than `halftone`'s own test suite uses
@@ -89,14 +89,14 @@ fn build_table(screens: &[Screen]) -> ViewPrimitive {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-halftone".to_string()
+        "halftone".to_string()
     }
 
     /// deliberately not live-refreshed, same reasoning every other
     /// static-file-declaration view in this project already follows: a
     /// declared screen set doesn't change on its own between ticks.
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-halftone: init for project at {}", project.root_path));
+        host::log(&format!("halftone: init for project at {}", project.root_path));
         Ok(Vec::new())
     }
 

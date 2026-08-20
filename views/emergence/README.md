@@ -21,5 +21,5 @@ turn it on to actually watch the pattern evolve.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_emergence.wasm`.
+Produces `target/wasm32-wasip1/release/emergence.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

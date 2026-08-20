@@ -110,7 +110,7 @@ fn placeholder() -> Vec<ViewPrimitive> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-emergence".to_string()
+        "emergence".to_string()
     }
 
     /// parses the declared board/rule once and encodes generation `0`
@@ -119,7 +119,7 @@ impl Guest for Component {
     /// state has to carry the running simulation forward across ticks
     /// not being recomputed from the file each time.
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-emergence: init for project at {}", project.root_path));
+        host::log(&format!("emergence: init for project at {}", project.root_path));
         let Some(path) = host::list_files("**/*.ca-pattern").unwrap_or_default().into_iter().next() else {
             return Ok(encode_state(0, 0, &Rule::LIFE, 0, &Board::new(0, 0)));
         };

@@ -15,10 +15,10 @@ const POINT_COUNT: usize = 40;
 
 /// reserved live-refresh token -- see `app.rs`'s `LIVE_TICK_COMMAND` on
 /// the Core side. Each plugin keeps its own copy not sharing one
-/// (not part of the WIT contract by design), same as `example-view-emc`.
+/// (not part of the WIT contract by design), same as `emc`.
 const LIVE_TICK_COMMAND: &str = "\0tick";
 
-/// `phase` drifts the general noise the same way `example-view-emc`'s
+/// `phase` drifts the general noise the same way `emc`'s
 /// does (cosmetic ripple on the clean points), but also sweeps the
 /// planted deviation's own magnitude from 0 to 15 and back -- the more
 /// useful thing to prove live for *this* plugin specifically is the
@@ -113,14 +113,14 @@ fn build_primitives(phase: f64) -> Vec<ViewPrimitive> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-deviation-analyzer".to_string()
+        "deviation".to_string()
     }
 
     /// deliberately calls back into `host::log`, same round-trip proof
     /// every other example view-plugin's `init` already establishes.
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
         bindings::iderm::plugin::host::log(&format!(
-            "example-view-deviation: init for project at {}",
+            "deviation: init for project at {}",
             project.root_path
         ));
         Ok(encode_state(0.0))
@@ -133,7 +133,7 @@ impl Guest for Component {
 
     /// only the reserved live-refresh token is recognized -- this
     /// example has no other mode/vocabulary to offer, matching how
-    /// `example-view-tla`'s non-`graph` commands are rejected.
+    /// `tla`'s non-`graph` commands are rejected.
     fn handle_command(state: Vec<u8>, command: String) -> Result<(Vec<u8>, Vec<ViewPrimitive>), String> {
         let phase = decode_state(&state)?;
         if command == LIVE_TICK_COMMAND {

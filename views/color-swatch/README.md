@@ -16,5 +16,5 @@ entries as raw values).
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_color_swatch.wasm`.
+Produces `target/wasm32-wasip1/release/color_swatch.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

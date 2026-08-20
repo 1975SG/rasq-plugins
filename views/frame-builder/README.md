@@ -16,5 +16,5 @@ byte layout).
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_frame_builder.wasm`.
+Produces `target/wasm32-wasip1/release/frame_builder.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

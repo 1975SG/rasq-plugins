@@ -12,7 +12,7 @@ struct Component;
 /// tiny hand-authored mutual-exclusion state machine and one real
 /// counterexample through it -- self-contained, no `.tla` file parsing,
 /// same "no external data dependency" simplicity `example-doctor-rule`/
-/// `example-view-emc` already follow. The violation: a second process
+/// `emc` already follow. The violation: a second process
 /// enters `Critical` while the first is still there (`Waiting -> Critical`
 /// a second time without an intervening `Exit`) -- a textbook
 /// mutual-exclusion counterexample, the kind `trace-view` is named for
@@ -87,16 +87,16 @@ impl Guest for Component {
     }
 
     /// deliberately calls back into `host::log`, same round-trip proof
-    /// `example-view-emc::init` already establishes for `view-provider`
+    /// `emc::init` already establishes for `view-provider`
     /// plugins.
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
         bindings::iderm::plugin::host::log(&format!(
-            "example-view-tla: init for project at {}",
+            "tla: init for project at {}",
             project.root_path
         ));
         // single mode-flag byte: 0 = trace, 1 = full state graph. No
         // other view-state needed -- both are fixed, pure functions of
-        // nothing, unlike example-view-emc's cursor position/live-
+        // nothing, unlike emc's cursor position/live-
         // refresh phase.
         Ok(vec![0])
     }

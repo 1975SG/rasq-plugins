@@ -31,7 +31,7 @@ fn next_uniform(state: &mut u64) -> f64 {
 }
 
 /// box-Muller over a plain xorshift64* stream -- same deterministic,
-/// `rand`-free technique `example-view-distribution` already uses.
+/// `rand`-free technique `distribution` already uses.
 fn gaussian(state: &mut u64) -> f64 {
     let u1 = next_uniform(state);
     let u2 = next_uniform(state);
@@ -72,7 +72,7 @@ fn simulate_ensemble(phase: f64) -> Vec<Vec<f64>> {
 /// renders a P10/P50/P90 risk-band fan chart -- `distribution-analysis`'s
 /// `percentile` per time step, P50 as the central `xy-chart` series and
 /// P10/P90 as a `Band` (ADR-017's `bands` field), the same combination
-/// `example-view-deviation`'s confidence band already proved for a
+/// `deviation`'s confidence band already proved for a
 /// different statistic (stddev-based, not percentile-based).
 fn build_primitives(phase: f64) -> Vec<ViewPrimitive> {
     let ensemble = simulate_ensemble(phase);
@@ -140,12 +140,12 @@ fn decode_state(state: &[u8]) -> Result<f64, String> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-risk-band".to_string()
+        "risk-band".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
         bindings::iderm::plugin::host::log(&format!(
-            "example-view-risk-band: init for project at {}",
+            "risk-band: init for project at {}",
             project.root_path
         ));
         Ok(encode_state(0.0))

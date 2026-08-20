@@ -14,5 +14,5 @@ field quantity spatially rather than as a single number over time.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_flow_field.wasm`.
+Produces `target/wasm32-wasip1/release/flow_field.wasm`.
 Copy it into a project's `.iderm/views/` to use it.

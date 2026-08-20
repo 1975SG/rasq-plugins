@@ -13,7 +13,7 @@ name = "cellular-automaton"
 version = "0.1.0"
 
 [[package]]
-name = "example-view-emergence"
+name = "emergence"
 version = "0.1.0"
 dependencies = [
  "cellular-automaton",

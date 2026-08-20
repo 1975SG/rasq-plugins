@@ -81,12 +81,12 @@ fn decode_state(state: &[u8]) -> Result<u64, String> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-checksum-inspector".to_string()
+        "checksum-inspector".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
         bindings::iderm::plugin::host::log(&format!(
-            "example-view-checksum-inspector: init for project at {}",
+            "checksum-inspector: init for project at {}",
             project.root_path
         ));
         Ok(encode_state(0))

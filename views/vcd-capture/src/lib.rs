@@ -11,10 +11,10 @@ use vcd_parser::{parse, VcdFile};
 
 struct Component;
 
-/// reserved live-refresh token -- see `example-view-emc`'s own copy of
+/// reserved live-refresh token -- see `emc`'s own copy of
 /// this constant for the full explanation. Was missing here entirely
-/// until ADR-057, on the same now-corrected assumption `example-view-
-/// analog-capture` had (ADR-055): a `.vcd` file was assumed to be a
+/// until ADR-057, on the same now-corrected assumption
+/// `analog-capture` had (ADR-055): a `.vcd` file was assumed to be a
 /// completed capture by the time anything opens it, and "live capture
 /// is a separate not-yet-designed mechanism" -- but that mechanism
 /// (ADR-030, `.iderm/tasks.toml` continuous tasks) already landed, and
@@ -33,8 +33,8 @@ const MAX_CHARTED_SIGNALS: usize = 8;
 
 /// one signal's timeline as a step-shaped waveform -- two points per
 /// held level (`t_start` and the next change's own time, same value),
-/// the identical technique `example-view-checksum-inspector`'s
-/// histogram staircase and `example-view-emc`'s step-shaped `Limit`
+/// the identical technique `checksum-inspector`'s
+/// histogram staircase and `emc`'s step-shaped `Limit`
 /// series already use for a flat-then-jump shape. `x`/`z`/unknown
 /// values are drawn at the low level -- `vcd_parser::VcdFile::
 /// has_unknown_or_high_z` is what actually flags their presence, this
@@ -100,7 +100,7 @@ fn build_primitives(vcd: &VcdFile) -> Vec<ViewPrimitive> {
 /// need exactly the same "find the capture file, read it fresh,
 /// re-parse it" round trip. Re-reading from scratch every call rather
 /// than tracking a byte offset is deliberate, same trade-off
-/// `example-view-analog-capture` already made: real VCD captures here
+/// `analog-capture` already made: real VCD captures here
 /// are small enough that honest-but-slightly-wasteful is the right
 /// call for now.
 fn load_primitives() -> Result<Vec<ViewPrimitive>, String> {
@@ -121,7 +121,7 @@ impl Guest for Component {
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
-        host::log(&format!("example-view-vcd-capture: init for project at {}", project.root_path));
+        host::log(&format!("vcd-capture: init for project at {}", project.root_path));
         Ok(Vec::new())
     }
 

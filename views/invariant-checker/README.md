@@ -20,5 +20,5 @@ plus a per-file summary row).
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_invariant_checker.wasm`.
+Produces `target/wasm32-wasip1/release/invariant_checker.wasm`.
 Copy it into a project's `.iderm/views/` to use it.
