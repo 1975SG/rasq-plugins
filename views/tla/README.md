@@ -20,5 +20,5 @@ TLA+ Toolbox shows.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_tla.wasm`. Copy it
-into a project's `.iderm/views/` to use it.
+Produces `target/wasm32-wasip1/release/tla.wasm`. Copy it into a
+project's `.iderm/views/` to use it.

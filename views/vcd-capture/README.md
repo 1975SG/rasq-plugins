@@ -22,5 +22,5 @@ a still-running logic analyzer task is appending to stays current.
 cargo component build --release
 ```
 
-Produces `target/wasm32-wasip1/release/example_view_vcd_capture.wasm`.
-Copy it into a project's `.iderm/views/` to use it.
+Produces `target/wasm32-wasip1/release/vcd_capture.wasm`. Copy it into
+a project's `.iderm/views/` to use it.

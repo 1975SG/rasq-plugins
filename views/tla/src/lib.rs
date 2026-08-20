@@ -83,7 +83,7 @@ fn state_graph() -> StateGraphView {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-tla-trace".to_string()
+        "tla".to_string()
     }
 
     /// deliberately calls back into `host::log`, same round-trip proof

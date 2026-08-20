@@ -117,7 +117,7 @@ fn load_primitives() -> Result<Vec<ViewPrimitive>, String> {
 
 impl Guest for Component {
     fn view_id() -> String {
-        "example-vcd-capture".to_string()
+        "vcd-capture".to_string()
     }
 
     fn init(project: ProjectInfo) -> Result<Vec<u8>, String> {
