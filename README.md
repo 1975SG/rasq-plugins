@@ -1,6 +1,6 @@
 # iderm-plugins
 
-I'm the plugin ecosystem for [iderm](https://github.com/SGozel75/iderm),
+I'm the plugin ecosystem for [iderm](https://github.com/1975SG/iderm),
 my terminal-first, project-aware IDE. Core ships a small set of
 built-in checks and no bundled views at all — this repo is where I put
 everything beyond that: view providers, repair recipes, and the
