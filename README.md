@@ -10,10 +10,9 @@ Doctor rules have their own repo, `iderm-doctor-rules` — I keep that
 one separate since it existed first and I saw no reason to fold real,
 working history into a rename.
 
-**Status: private, pre-OSS staging.** This repo exists ahead of
-iderm's own public release, so I can get the structure, the ABI
-convention, and the contribution shape right while nobody but me is
-depending on any of it yet.
+**Status: public.** Core (`iderm`) itself stays private for now; this
+repo, `iderm-doctor-rules`, `iderm-packaging`, and
+`iderm-community-plugins` went public together at launch.
 
 ## Layout
 
@@ -23,6 +22,11 @@ repair-recipes/<name>/   one crate per repair recipe
 languages/                niche language manifests (not WASM plugins)
 libs/<name>/              shared Rust crates a handful of the plugins above depend on
 ```
+
+Browse: [`views/`](https://github.com/1975SG/iderm-plugins/tree/master/views) ·
+[`repair-recipes/gitignore-scaffold/`](https://github.com/1975SG/iderm-plugins/tree/master/repair-recipes/gitignore-scaffold) ·
+[`libs/`](https://github.com/1975SG/iderm-plugins/tree/master/libs) ·
+[`languages/`](https://github.com/1975SG/iderm-plugins/tree/master/languages)
 
 Every plugin under `views/` and `repair-recipes/` is its own crate,
 not a workspace member sharing one `Cargo.toml` — I want each one to
