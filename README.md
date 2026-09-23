@@ -1,4 +1,8 @@
-# iderm-plugins
+# rasq-plugins
+
+**This project is now called rasq.** `iderm` was its working prototype
+name — Core's own repo hasn't been renamed yet (it's still private, at
+[`github.com/1975SG/iderm`](https://github.com/1975SG/iderm)).
 
 I'm the plugin ecosystem for [iderm](https://github.com/1975SG/iderm),
 my terminal-first, project-aware IDE. Core ships a small set of
@@ -6,13 +10,13 @@ built-in checks and no bundled views at all — this repo is where I put
 everything beyond that: view providers, repair recipes, and the
 niche language manifests I don't embed by default.
 
-Doctor rules have their own repo, `iderm-doctor-rules` — I keep that
+Doctor rules have their own repo, `rasq-doctor-rules` — I keep that
 one separate since it existed first and I saw no reason to fold real,
 working history into a rename.
 
 **Status: public.** Core (`iderm`) itself stays private for now; this
-repo, `iderm-doctor-rules`, `iderm-packaging`, and
-`iderm-community-plugins` went public together at launch.
+repo, `rasq-doctor-rules`, `rasq-packaging`, and
+`rasq-community-plugins` went public together at launch.
 
 ## Layout
 
@@ -23,10 +27,10 @@ languages/                niche language manifests (not WASM plugins)
 libs/<name>/              shared Rust crates a handful of the plugins above depend on
 ```
 
-Browse: [`views/`](https://github.com/1975SG/iderm-plugins/tree/master/views) ·
-[`repair-recipes/gitignore-scaffold/`](https://github.com/1975SG/iderm-plugins/tree/master/repair-recipes/gitignore-scaffold) ·
-[`libs/`](https://github.com/1975SG/iderm-plugins/tree/master/libs) ·
-[`languages/`](https://github.com/1975SG/iderm-plugins/tree/master/languages)
+Browse: [`views/`](https://github.com/1975SG/rasq-plugins/tree/master/views) ·
+[`repair-recipes/gitignore-scaffold/`](https://github.com/1975SG/rasq-plugins/tree/master/repair-recipes/gitignore-scaffold) ·
+[`libs/`](https://github.com/1975SG/rasq-plugins/tree/master/libs) ·
+[`languages/`](https://github.com/1975SG/rasq-plugins/tree/master/languages)
 
 Every plugin under `views/` and `repair-recipes/` is its own crate,
 not a workspace member sharing one `Cargo.toml` — I want each one to
